@@ -5,6 +5,16 @@ Appli de gestion de projets et de taches en React + TypeScript (Vite), avec une 
 
 Auteur : Patrice CHEN (projet fait seul)
 
+## En ligne
+
+- site (Vercel) : https://projet-react-typescrypt.vercel.app
+- api (Render) : https://taskflow-api-x4m4.onrender.com/projects
+
+L'api est sur l'offre gratuite de Render : elle s'endort apres 15 min sans visite, le 1er chargement peut prendre ~30-50 s.
+Les modifs faites en ligne sont perdues quand l'api redemarre.
+
+Sur Vercel la variable `VITE_API_URL` pointe vers l'api Render (en local c'est http://localhost:3001).
+
 ## Lancer le projet
 
 ```bash
