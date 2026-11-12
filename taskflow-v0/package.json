@@ -7,6 +7,7 @@
     "dev": "concurrently -n api,web -c blue,green \"npm:api\" \"npm:web\"",
     "web": "vite",
     "api": "json-server db.json --port 3001",
+    "api:prod": "json-server db.json --host 0.0.0.0 --port $PORT",
     "reset-db": "node -e \"require('fs').copyFileSync('db.seed.json','db.json')\"",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
