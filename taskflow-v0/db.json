@@ -44,5 +44,6 @@
       "priority": 1,
       "dueDate": "2026-12-01"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

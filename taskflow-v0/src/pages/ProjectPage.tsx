@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { api, ApiError } from "../api";
 import { nextStatus, type Filter, type NewProject, type Priority, type Project, type Sort, type Task } from "../type";
 import { EditProjectForm } from "../components/EditProjectForm";
+import { useDebounce } from "../hook/useDebounce";
 import { Card } from "../components/Card";
 import { FilterBar } from "../components/FilterBar";
 import { TaskForm } from "../components/TaskForm";
@@ -18,6 +19,8 @@ export function ProjectPage({ id }: Props) {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [filter, setFilter] = useState<Filter>("all");
     const [sort, setSort] = useState<Sort>("added");
+    const [search, setSearch] = useState("");
+    const debouncedSearch = useDebounce(search, 300);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -102,7 +105,10 @@ export function ProjectPage({ id }: Props) {
     if (notFound) return <NotFoundPage />;
     if (!project) return <ErrorMessage message={error ?? "Projet indisponible."} />;
 
-    const filtered = filter === "all" ? tasks : tasks.filter((t) => t.status === filter);
+    const query = debouncedSearch.trim().toLowerCase();
+    const filtered = tasks
+        .filter((t) => filter === "all" || t.status === filter)
+        .filter((t) => t.title.toLowerCase().includes(query));
     // tri par echeance : les taches sans date a la fin
     const visible =
         sort === "dueDate"
@@ -144,6 +150,17 @@ export function ProjectPage({ id }: Props) {
                 }
             >
                 <TaskForm onAdd={add} />
+                <label htmlFor="search" className="sr-only">
+                    Rechercher une tâche
+                </label>
+                <input
+                    id="search"
+                    type="search"
+                    className="search"
+                    placeholder="Rechercher une tâche…"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
                 <TaskList tasks={visible} onCycle={cycle} onRemove={remove} />
             </Card>
         </section>
