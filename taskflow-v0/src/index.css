@@ -69,3 +69,5 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); ou
 .field textarea { resize: vertical; }
 .field [aria-invalid="true"] { border-color: var(--danger); }
 .form button[type="submit"] { justify-self: start; background: var(--accent); border-color: var(--accent); color: #fff; }
+.actions { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+button.danger { color: var(--danger); border-color: var(--danger); }

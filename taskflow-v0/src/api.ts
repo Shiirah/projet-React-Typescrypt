@@ -31,6 +31,14 @@ export const api = {
             method: "POST",
             body: JSON.stringify(data),
         }),
+    updateProject: (id: string, changes: Partial<NewProject>) =>
+        request<Project>(`/projects/${id}`, {
+            method: "PATCH",
+            body: JSON.stringify(changes),
+        }),
+    // _dependent=tasks supprime aussi les taches du projet
+    deleteProject: (id: string) =>
+        request<Project>(`/projects/${id}?_dependent=tasks`, { method: "DELETE" }),
     getTasks: (projectId: string) => request<Task[]>(`/tasks?projectId=${projectId}`),
     createTask: (data: NewTask) =>
         request<Task>("/tasks", {

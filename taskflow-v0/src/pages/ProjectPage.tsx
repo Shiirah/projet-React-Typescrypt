@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { api, ApiError } from "../api";
-import { nextStatus, type Filter, type Priority, type Project, type Task } from "../type";
+import { nextStatus, type Filter, type NewProject, type Priority, type Project, type Task } from "../type";
+import { EditProjectForm } from "../components/EditProjectForm";
 import { Card } from "../components/Card";
 import { FilterBar } from "../components/FilterBar";
 import { TaskForm } from "../components/TaskForm";
@@ -19,6 +20,8 @@ export function ProjectPage({ id }: Props) {
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [editing, setEditing] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         let ignore = false;
@@ -72,6 +75,28 @@ export function ProjectPage({ id }: Props) {
         }
     };
 
+    const saveProject = async (values: NewProject) => {
+        try {
+            const updated = await api.updateProject(id, values);
+            setProject(updated);
+            setEditing(false);
+            setError(null);
+        } catch {
+            setError("Le projet n'a pas pu être modifié.");
+        }
+    };
+
+    const deleteProject = async () => {
+        if (!project) return;
+        if (!window.confirm(`Supprimer « ${project.name} » et toutes ses tâches ?`)) return;
+        try {
+            await api.deleteProject(id);
+            navigate("/");
+        } catch {
+            setError("Le projet n'a pas pu être supprimé.");
+        }
+    };
+
     if (loading) return <Loading />;
     if (notFound) return <NotFoundPage />;
     if (!project) return <ErrorMessage message={error ?? "Projet indisponible."} />;
@@ -83,8 +108,22 @@ export function ProjectPage({ id }: Props) {
             <Link to="/" className="small">
                 ← Tous les projets
             </Link>
-            <h1>{project.name}</h1>
-            <p className="muted">{project.description}</p>
+            {editing ? (
+                <EditProjectForm project={project} onSave={saveProject} onCancel={() => setEditing(false)} />
+            ) : (
+                <>
+                    <h1>{project.name}</h1>
+                    <p className="muted">{project.description}</p>
+                    <div className="actions">
+                        <button type="button" onClick={() => setEditing(true)}>
+                            Modifier
+                        </button>
+                        <button type="button" className="danger" onClick={deleteProject}>
+                            Supprimer
+                        </button>
+                    </div>
+                </>
+            )}
             {error && <ErrorMessage message={error} />}
             <Card title="Tâches" actions={<FilterBar value={filter} onChange={setFilter} />}>
                 <TaskForm onAdd={add} />
