@@ -13,6 +13,7 @@ export function Layout() {
                         Projets
                     </NavLink>
                     <NavLink to="/projects/new">Nouveau projet</NavLink>
+                    <NavLink to="/stats">Stats</NavLink>
                     <NavLink to="/about">À propos</NavLink>
                 </nav>
                 <ThemeToggle />

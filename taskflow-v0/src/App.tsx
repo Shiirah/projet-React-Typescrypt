@@ -6,6 +6,7 @@ import { ProjectsPage } from './pages/ProjectsPage';
 import { ProjectPage } from './pages/ProjectPage';
 import { NewProjectPage } from './pages/NewProjectPage';
 import { AboutPage } from './pages/AboutPage';
+import { StatsPage } from './pages/StatsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Route index element={<ProjectsPage />} />
         <Route path="projects/new" element={<NewProjectPage />} />
         <Route path="projects/:id" element={<ProjectRoute />} />
+        <Route path="stats" element={<StatsPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
