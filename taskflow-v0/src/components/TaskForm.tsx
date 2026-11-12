@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { Priority } from "../type";
 
-type Props = { onAdd: (title: string) => void };
+type Props = { onAdd: (title: string, priority: Priority) => void };
 export function TaskForm({ onAdd }: Props) {
     const [title, setTitle] = useState("");
+    const [priority, setPriority] = useState<Priority>(2);
     const error = title.length > 80 ? "80 caractères minimum" : null;
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    // focus au debut
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!title.trim() || error) return;
-        onAdd(title.trim());
+        onAdd(title.trim(), priority);
         setTitle("");
+        // refocus apres ajout
+        inputRef.current?.focus();
     }
     return (
         <form className="task-form" onSubmit={handleSubmit}>
@@ -17,11 +28,21 @@ export function TaskForm({ onAdd }: Props) {
             </label>
             <input
                 id="new-task"
+                ref={inputRef}
                 value={title}
                 placeholder="Nouvelle tâche"
                 onChange={(e) => setTitle(e.target.value)}
                 aria-invalid={!error}
                 aria-describedby="new-task-error"
             />
+            <select
+                aria-label="Priorité"
+                value={priority}
+                onChange={(e) => setPriority(Number(e.target.value) as Priority)}
+            >
+                <option value={1}>Haute</option>
+                <option value={2}>Moyenne</option>
+                <option value={3}>Basse</option>
+            </select>
             <button disabled={!title.trim() || !!error}>Ajouter</button>
         </form>);}
