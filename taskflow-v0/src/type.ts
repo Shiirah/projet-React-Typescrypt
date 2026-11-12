@@ -2,7 +2,9 @@ export type Status = "todo" | "doing" | "done";
 export type Priority = 1 | 2 | 3;
 export type Filter = "all" | Status;
 export type Project = { id: string; name: string; description: string };
-export type Task = { id: string; projectId: string; title: string; status: Status; priority: Priority };
+// dueDate au format "2026-11-20" (optionnelle)
+export type Task = { id: string; projectId: string; title: string; status: Status; priority: Priority; dueDate?: string };
+export type Sort = "added" | "dueDate";
 
 // sans id, c'est le serveur qui le cree
 export type NewProject = Omit<Project, "id">;

@@ -17,28 +17,32 @@
       "projectId": "site-esiee",
       "title": "Maquettes validées",
       "status": "done",
-      "priority": 1
+      "priority": 1,
+      "dueDate": "2026-11-05"
     },
     {
       "id": "t2",
       "projectId": "site-esiee",
       "title": "Intégrer la page d'accueil",
       "status": "doing",
-      "priority": 2
+      "priority": 2,
+      "dueDate": "2026-11-20"
     },
     {
       "id": "t3",
       "projectId": "site-esiee",
       "title": "Tester sur mobile",
       "status": "todo",
-      "priority": 3
+      "priority": 3,
+      "dueDate": "2026-11-10"
     },
     {
       "id": "t4",
       "projectId": "app-mobile",
       "title": "Choisir le framework",
       "status": "todo",
-      "priority": 1
+      "priority": 1,
+      "dueDate": "2026-12-01"
     }
   ]
 }

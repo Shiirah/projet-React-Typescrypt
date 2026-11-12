@@ -6,7 +6,13 @@ type Props = {
     onRemove: (id: string) => void;
 };
 
+// "2026-11-20" -> "20/11/2026"
+const formatDate = (d: string) => d.split("-").reverse().join("/");
+
 export function TaskItem({ task, onCycle, onRemove }: Props) {
+    const today = new Date().toISOString().slice(0, 10);
+    // en retard si la date est passee et pas finie
+    const late = !!task.dueDate && task.dueDate < today && task.status !== "done";
     return (
         <li className={`task task-item--${task.status}`}>
         <button
@@ -18,6 +24,11 @@ export function TaskItem({ task, onCycle, onRemove }: Props) {
             {STATUS_LABELS[task.status]}
         </button>
         <span className="task__title">{task.title}</span>
+        {task.dueDate && (
+            <span className={late ? "due due--late" : "due"} title={late ? "En retard" : "Échéance"}>
+                {formatDate(task.dueDate)}
+            </span>
+        )}
         <span className={`prop prio--${task.priority}`}>P{task.priority}</span>
         <button
             type="button"

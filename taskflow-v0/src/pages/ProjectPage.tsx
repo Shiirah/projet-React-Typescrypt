@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { api, ApiError } from "../api";
-import { nextStatus, type Filter, type NewProject, type Priority, type Project, type Task } from "../type";
+import { nextStatus, type Filter, type NewProject, type Priority, type Project, type Sort, type Task } from "../type";
 import { EditProjectForm } from "../components/EditProjectForm";
 import { Card } from "../components/Card";
 import { FilterBar } from "../components/FilterBar";
@@ -17,6 +17,7 @@ export function ProjectPage({ id }: Props) {
     const [project, setProject] = useState<Project | null>(null);
     const [tasks, setTasks] = useState<Task[]>([]);
     const [filter, setFilter] = useState<Filter>("all");
+    const [sort, setSort] = useState<Sort>("added");
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -46,9 +47,9 @@ export function ProjectPage({ id }: Props) {
     }, [id]);
 
     // d'abord l'api, apres le state
-    const add = async (title: string, priority: Priority) => {
+    const add = async (title: string, priority: Priority, dueDate?: string) => {
         try {
-            const created = await api.createTask({ projectId: id, title, status: "todo", priority });
+            const created = await api.createTask({ projectId: id, title, status: "todo", priority, dueDate });
             setTasks((prev) => [...prev, created]);
         } catch {
             setError("La tâche n'a pas pu être ajoutée.");
@@ -101,7 +102,12 @@ export function ProjectPage({ id }: Props) {
     if (notFound) return <NotFoundPage />;
     if (!project) return <ErrorMessage message={error ?? "Projet indisponible."} />;
 
-    const visible = filter === "all" ? tasks : tasks.filter((t) => t.status === filter);
+    const filtered = filter === "all" ? tasks : tasks.filter((t) => t.status === filter);
+    // tri par echeance : les taches sans date a la fin
+    const visible =
+        sort === "dueDate"
+            ? [...filtered].sort((a, b) => (a.dueDate ?? "9999").localeCompare(b.dueDate ?? "9999"))
+            : filtered;
 
     return (
         <section>
@@ -125,7 +131,18 @@ export function ProjectPage({ id }: Props) {
                 </>
             )}
             {error && <ErrorMessage message={error} />}
-            <Card title="Tâches" actions={<FilterBar value={filter} onChange={setFilter} />}>
+            <Card
+                title="Tâches"
+                actions={
+                    <>
+                        <select aria-label="Trier" value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
+                            <option value="added">Ordre d'ajout</option>
+                            <option value="dueDate">Échéance</option>
+                        </select>
+                        <FilterBar value={filter} onChange={setFilter} />
+                    </>
+                }
+            >
                 <TaskForm onAdd={add} />
                 <TaskList tasks={visible} onCycle={cycle} onRemove={remove} />
             </Card>
