@@ -1,0 +1,44 @@
+{
+  "projects": [
+    {
+      "id": "site-esiee",
+      "name": "Refonte site ESIEE-IT",
+      "description": "Nouvelle vitrine pour la rentrée."
+    },
+    {
+      "id": "app-mobile",
+      "name": "App mobile",
+      "description": "Version mobile de TaskFlow."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "projectId": "site-esiee",
+      "title": "Maquettes validées",
+      "status": "done",
+      "priority": 1
+    },
+    {
+      "id": "t2",
+      "projectId": "site-esiee",
+      "title": "Intégrer la page d'accueil",
+      "status": "doing",
+      "priority": 2
+    },
+    {
+      "id": "t3",
+      "projectId": "site-esiee",
+      "title": "Tester sur mobile",
+      "status": "todo",
+      "priority": 3
+    },
+    {
+      "id": "t4",
+      "projectId": "app-mobile",
+      "title": "Choisir le framework",
+      "status": "todo",
+      "priority": 1
+    }
+  ]
+}

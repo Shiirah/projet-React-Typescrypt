@@ -52,3 +52,20 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); ou
 .prio--3 { background: #f1f5f9; color: #475569; }
 .empty { color: var(--muted); text-align: center; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.topbar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.brand { font-size: 1.4rem; font-weight: 700; color: var(--text); text-decoration: none; }
+.nav { display: flex; gap: 1rem; flex: 1; }
+.nav a { color: var(--muted); text-decoration: none; }
+.nav a.active { color: var(--accent); font-weight: 600; }
+.muted { color: var(--muted); }
+.small { font-size: 0.85rem; }
+.project-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+.project-card { display: block; height: 100%; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; color: var(--text); text-decoration: none; }
+.project-card:hover { border-color: var(--accent); }
+.project-card h2 { margin: 0 0 0.5rem; font-size: 1.1rem; }
+.form { display: grid; gap: 1rem; max-width: 480px; }
+.field { display: grid; gap: 0.35rem; }
+.field input, .field textarea { font: inherit; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); }
+.field textarea { resize: vertical; }
+.field [aria-invalid="true"] { border-color: var(--danger); }
+.form button[type="submit"] { justify-self: start; background: var(--accent); border-color: var(--accent); color: #fff; }
